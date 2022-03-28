@@ -36,14 +36,43 @@ class IntegrationTest extends Specification {
         "姫路"    | "のぞみ" | "自由席" || 15400
     }
 
+    def "東京 から #station まで #train #seat 子供片道1枚"() {
+        when:
+        def actualFare = getFareForChild(station, train, seat)
+
+        then:
+        actualFare == expectedFare
+
+        where:
+        station | train | seat  || expectedFare
+        "新大阪"   | "ひかり" | "指定席" || 7190
+        "新大阪"   | "ひかり" | "自由席" || 6930
+        "新大阪"   | "のぞみ" | "指定席" || 7350
+        "新大阪"   | "のぞみ" | "自由席" || 6930
+        "姫路"    | "ひかり" | "指定席" || 7960
+        "姫路"    | "ひかり" | "自由席" || 7690
+        "姫路"    | "のぞみ" | "指定席" || 8220
+        "姫路"    | "のぞみ" | "自由席" || 7690
+    }
+
     private static int getFareForOneOfPerson(String station, String train, String seat) {
         DepartureAndDestination departureAndDestination = new DepartureAndDestination(Station.TOKYO, convertTypeForStation(station))
 
         SuperExpressType superExpressType = convertTypeForTrain(train)
 
         SeatType seatType = convertTypeForSeat(seat)
-        
+
         return new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(departureAndDestination, superExpressType, seatType, new ChildOption(false)).getValue()
+    }
+
+    private static int getFareForChild(String station, String train, String seat) {
+        DepartureAndDestination departureAndDestination = new DepartureAndDestination(Station.TOKYO, convertTypeForStation(station))
+
+        SuperExpressType superExpressType = convertTypeForTrain(train)
+
+        SeatType seatType = convertTypeForSeat(seat)
+
+        return new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(departureAndDestination, superExpressType, seatType, new ChildOption(true)).getValue()
     }
 
     private static Station convertTypeForStation(String value) {
