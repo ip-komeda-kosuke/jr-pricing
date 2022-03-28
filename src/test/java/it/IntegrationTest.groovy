@@ -37,9 +37,9 @@ class IntegrationTest extends Specification {
     }
 
     private static int getFareForOneOfPerson(String station, String train, String seat) {
-        DepartureAndDestination departureAndDestination = null
-        SuperExpressType superExpressType = null
-        SeatType seatType = null
+        DepartureAndDestination departureAndDestination
+        SuperExpressType superExpressType
+        SeatType seatType
         switch (station) {
             case "新大阪":
                 departureAndDestination = new DepartureAndDestination(Station.TOKYO, Station.SHINOSAKA)
@@ -47,6 +47,8 @@ class IntegrationTest extends Specification {
             case "姫路":
                 departureAndDestination = new DepartureAndDestination(Station.TOKYO, Station.HIMEJI)
                 break
+            default:
+                throw new RuntimeException("指定した駅名はありません。")
         }
 
         switch (train) {
@@ -56,6 +58,8 @@ class IntegrationTest extends Specification {
             case "のぞみ":
                 superExpressType = SuperExpressType.NOZOMI
                 break
+            default:
+                throw new RuntimeException("指定した新幹線はありません。")
         }
 
         switch (seat) {
@@ -65,6 +69,8 @@ class IntegrationTest extends Specification {
             case "自由席":
                 seatType = SeatType.FREE_SEAT
                 break
+            default:
+                throw new RuntimeException("指定した席はありません。")
         }
         return new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(departureAndDestination, superExpressType, seatType, new ChildOption(false)).getValue()
     }
