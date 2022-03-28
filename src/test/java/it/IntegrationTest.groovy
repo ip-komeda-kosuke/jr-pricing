@@ -37,42 +37,52 @@ class IntegrationTest extends Specification {
     }
 
     private static int getFareForOneOfPerson(String station, String train, String seat) {
-        DepartureAndDestination departureAndDestination
-        SuperExpressType superExpressType
-        SeatType seatType
-        switch (station) {
+        DepartureAndDestination departureAndDestination = new DepartureAndDestination(Station.TOKYO, convertTypeForStation(station))
+
+        SuperExpressType superExpressType = convertTypeForTrain(train)
+
+        SeatType seatType = convertTypeForSeat(seat)
+        
+        return new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(departureAndDestination, superExpressType, seatType, new ChildOption(false)).getValue()
+    }
+
+    private static Station convertTypeForStation(String value) {
+        switch (value) {
             case "新大阪":
-                departureAndDestination = new DepartureAndDestination(Station.TOKYO, Station.SHINOSAKA)
+                return Station.SHINOSAKA
                 break
             case "姫路":
-                departureAndDestination = new DepartureAndDestination(Station.TOKYO, Station.HIMEJI)
+                return Station.HIMEJI
                 break
             default:
                 throw new RuntimeException("指定した駅名はありません。")
         }
+    }
 
-        switch (train) {
+    private static SuperExpressType convertTypeForTrain(String value) {
+        switch (value) {
             case "ひかり":
-                superExpressType = SuperExpressType.HIKARI
+                return SuperExpressType.HIKARI
                 break
             case "のぞみ":
-                superExpressType = SuperExpressType.NOZOMI
+                return SuperExpressType.NOZOMI
                 break
             default:
                 throw new RuntimeException("指定した新幹線はありません。")
         }
+    }
 
-        switch (seat) {
+    private static SeatType convertTypeForSeat(String value) {
+        switch (value) {
             case "指定席":
-                seatType = SeatType.RESERVED_SEAT
+                return SeatType.RESERVED_SEAT
                 break
             case "自由席":
-                seatType = SeatType.FREE_SEAT
+                return SeatType.FREE_SEAT
                 break
             default:
                 throw new RuntimeException("指定した席はありません。")
         }
-        return new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(departureAndDestination, superExpressType, seatType, new ChildOption(false)).getValue()
     }
 
 }
