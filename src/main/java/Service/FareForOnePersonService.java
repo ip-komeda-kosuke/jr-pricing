@@ -23,7 +23,7 @@ public class FareForOnePersonService {
 
     private SuperExpressSurcharge calculateExpressSurcharge(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
         SuperExpressSurcharge superExpressSurcharge = new SuperExpressSurcharge(fareRepository.findSuperExpressFare(departureAndDestination).getValue());
-        if (superExpressType.getSuperExpressOption().isValue() && seatType == SeatType.RESERVED_SEAT) {
+        if (superExpressType == SuperExpressType.NOZOMI && seatType == SeatType.RESERVED_SEAT) {
             superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() + fareRepository.findExtraFare(departureAndDestination).getValue());
             return superExpressSurcharge;
         }
