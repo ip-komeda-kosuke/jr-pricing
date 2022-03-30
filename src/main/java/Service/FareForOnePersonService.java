@@ -1,6 +1,7 @@
 package Service;
 
 import domain.child_option.ChildOption;
+import domain.discount.DiscountPolicy;
 import domain.fare.*;
 import domain.fare.AdultFare;
 import domain.fare.BasicFare;
@@ -31,7 +32,7 @@ public class FareForOnePersonService {
         }
 
         if (seatType == SeatType.FREE_SEAT) {
-            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() - 530);
+            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() - DiscountPolicy.getDISCOUNT_FOR_FREE_SEAT().getValue());
             return superExpressSurcharge;
         }
         return superExpressSurcharge;
@@ -44,8 +45,8 @@ public class FareForOnePersonService {
     }
 
     private ChildFare calculateChildFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
-        BasicFare basicFareFareForChild = fareRepository.findBasicFare(departureAndDestination).discount(50).truncate();
-        SuperExpressSurcharge superExpressSurchargeForChild = calculateExpressSurcharge(departureAndDestination, superExpressType, seatType).discount(50).truncate();
+        BasicFare basicFareFareForChild = fareRepository.findBasicFare(departureAndDestination).discount(50);
+        SuperExpressSurcharge superExpressSurchargeForChild = calculateExpressSurcharge(departureAndDestination, superExpressType, seatType).discount(50);
         return new ChildFare(basicFareFareForChild.getValue() + superExpressSurchargeForChild.getValue());
     }
 }

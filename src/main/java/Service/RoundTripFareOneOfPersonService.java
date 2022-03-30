@@ -24,7 +24,7 @@ public class RoundTripFareOneOfPersonService {
     private SuperExpressSurchargeForRoundTrip calculateSuperExpressSurchargeForRoundTrip(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType, ChildOption childOption) {
         SuperExpressSurcharge superExpressSurcharge = new FareForOnePersonService(fareRepository).calculateExpressSurcharge(departureAndDestination, superExpressType, seatType);
         if(childOption.isChild()){
-            superExpressSurcharge = superExpressSurcharge.discount(50).truncate();
+            superExpressSurcharge = superExpressSurcharge.discount(50);
             return new SuperExpressSurchargeForRoundTrip(superExpressSurcharge.two_times().getValue());
         }else {
             return new SuperExpressSurchargeForRoundTrip(superExpressSurcharge.two_times().getValue());
@@ -45,15 +45,15 @@ public class RoundTripFareOneOfPersonService {
 
     private BasicFareForRoundTrip calculateBasicFareForRoundTrip(BasicFare basicFare, Distance distance, ChildOption childOption) {
         if (childOption.isChild()) {
-            BasicFare basicFareForChild = basicFare.discount(50).truncate();
+            BasicFare basicFareForChild = basicFare.discount(50);
             if (distance.getValue() >= 601) {
-                return new BasicFareForRoundTrip(basicFareForChild.discount(10).truncate().two_times().getValue());
+                return new BasicFareForRoundTrip(basicFareForChild.discount(10).two_times().getValue());
             } else {
                 return new BasicFareForRoundTrip(basicFareForChild.two_times().getValue());
             }
         } else {
             if (distance.getValue() >= 601) {
-                return new BasicFareForRoundTrip(basicFare.discount(10).truncate().two_times().getValue());
+                return new BasicFareForRoundTrip(basicFare.discount(10).two_times().getValue());
             } else {
                 return new BasicFareForRoundTrip(basicFare.two_times().getValue());
             }

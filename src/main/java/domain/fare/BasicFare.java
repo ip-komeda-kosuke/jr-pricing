@@ -8,13 +8,10 @@ public class BasicFare {
     @Getter
     private final int value;
 
-    public BasicFare truncate() {
-        int unitDigit = value % 10;
-        return new BasicFare(value - unitDigit);
-    }
-
     public BasicFare discount(int discountValue) {
-        return new BasicFare((int) ((double) value * (1 - ((double) discountValue / 100))));
+        BasicFare discountedBasicFare = new BasicFare((int) ((double) value * (1 - ((double) discountValue / 100))));
+        int unitDigit = discountedBasicFare.getValue() % 10;
+        return new BasicFare(discountedBasicFare.getValue() - unitDigit);
     }
 
     public BasicFare two_times() {
