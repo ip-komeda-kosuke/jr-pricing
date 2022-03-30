@@ -14,6 +14,10 @@ public class BasicFare {
     }
 
     public BasicFare discount(int discountValue) {
-        return new BasicFare((int) ((double) value * ((double) discountValue / 100)));
+        return new BasicFare((int) ((double) value * (1 - ((double) discountValue / 100))));
+    }
+
+    public BasicFare two_times() {
+        return new BasicFare(2 * getValue());
     }
 }

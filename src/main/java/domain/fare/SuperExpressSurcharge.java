@@ -22,4 +22,8 @@ public class SuperExpressSurcharge {
     public SuperExpressSurcharge discount(int discountValue) {
         return new SuperExpressSurcharge((int) ((double) value * ((double) discountValue / 100)));
     }
+
+    public SuperExpressSurcharge two_times() {
+        return new SuperExpressSurcharge(2 * getValue());
+    }
 }

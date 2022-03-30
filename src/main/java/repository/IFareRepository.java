@@ -1,5 +1,6 @@
 package repository;
 
+import domain.distance.Distance;
 import domain.fare.BasicFare;
 import domain.fare.ExtraFare;
 import domain.fare.SuperExpressFareForReservedSeat;
@@ -11,4 +12,6 @@ public interface IFareRepository {
     SuperExpressFareForReservedSeat findSuperExpressFare(DepartureAndDestination departureAndDestination);
 
     ExtraFare findExtraFare(DepartureAndDestination departureAndDestination);
+
+    Distance findDistance(DepartureAndDestination departureAndDestination);
 }

@@ -2,6 +2,8 @@ package Service;
 
 import domain.child_option.ChildOption;
 import domain.fare.*;
+import domain.fare.AdultFare;
+import domain.fare.BasicFare;
 import domain.seat_type.SeatType;
 import domain.station.DepartureAndDestination;
 import domain.super_express_type.SuperExpressType;
@@ -21,7 +23,7 @@ public class FareForOnePersonService {
         }
     }
 
-    private SuperExpressSurcharge calculateExpressSurcharge(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
+    SuperExpressSurcharge calculateExpressSurcharge(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
         SuperExpressSurcharge superExpressSurcharge = new SuperExpressSurcharge(fareRepository.findSuperExpressFare(departureAndDestination).getValue());
         if (superExpressType == SuperExpressType.NOZOMI && seatType == SeatType.RESERVED_SEAT) {
             superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() + fareRepository.findExtraFare(departureAndDestination).getValue());

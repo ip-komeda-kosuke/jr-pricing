@@ -1,5 +1,6 @@
 package repository;
 
+import domain.distance.Distance;
 import domain.fare.BasicFare;
 import domain.fare.ExtraFare;
 import domain.fare.SuperExpressFareForReservedSeat;
@@ -36,6 +37,16 @@ public class FareRepository implements IFareRepository {
 
         return new ExtraFare(searchChargeFromCSV(file, start, end));
     }
+
+    @Override
+    public Distance findDistance(DepartureAndDestination departureAndDestination) {
+        String file = "data/distance_list.csv";
+        String start = departureAndDestination.getDeparture().toString();
+        String end = departureAndDestination.getDestination().toString();
+
+        return new Distance(searchChargeFromCSV(file, start, end));
+    }
+
 
     private int searchChargeFromCSV(String file, String column, String row) {
         BufferedReader br;
