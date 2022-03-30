@@ -1,6 +1,7 @@
 package it
 
 import Service.FareForOnePersonService
+import Service.RoundTripFareOneOfPersonService
 import domain.child_option.ChildOption
 import domain.seat_type.SeatType
 import domain.station.DepartureAndDestination
@@ -60,6 +61,36 @@ class IntegrationTest extends Specification {
         Station.HIMEJI    | SuperExpressType.HIKARI | SeatType.FREE_SEAT     || 7690
         Station.HIMEJI    | SuperExpressType.NOZOMI | SeatType.RESERVED_SEAT || 8220
         Station.HIMEJI    | SuperExpressType.NOZOMI | SeatType.FREE_SEAT     || 7690
+    }
+
+    def "TOKYO から #destination まで #superExpressType #seatType 子供オプション #isChild 往復"() {
+        when:
+        def actualFare = new RoundTripFareOneOfPersonService(new FareRepository()).calculateRoundTripFare(
+                new DepartureAndDestination(Station.TOKYO, destination),
+                superExpressType, seatType, new ChildOption(isChild)).getValue()
+
+        then:
+        actualFare == expectedFare
+
+        where:
+        destination       | superExpressType        | seatType               | isChild || expectedFare
+        Station.SHINOSAKA | SuperExpressType.HIKARI | SeatType.RESERVED_SEAT | false   || 28800
+        Station.SHINOSAKA | SuperExpressType.HIKARI | SeatType.FREE_SEAT     | false   || 27740
+        Station.SHINOSAKA | SuperExpressType.NOZOMI | SeatType.RESERVED_SEAT | false   || 29440
+        Station.SHINOSAKA | SuperExpressType.NOZOMI | SeatType.FREE_SEAT     | false   || 27740
+        Station.HIMEJI    | SuperExpressType.HIKARI | SeatType.RESERVED_SEAT | false   || 29840
+        Station.HIMEJI    | SuperExpressType.HIKARI | SeatType.FREE_SEAT     | false   || 28780
+        Station.HIMEJI    | SuperExpressType.NOZOMI | SeatType.RESERVED_SEAT | false   || 30900
+        Station.HIMEJI    | SuperExpressType.NOZOMI | SeatType.FREE_SEAT     | false   || 28780
+
+        Station.SHINOSAKA | SuperExpressType.HIKARI | SeatType.RESERVED_SEAT | true    || 14380
+        Station.SHINOSAKA | SuperExpressType.HIKARI | SeatType.FREE_SEAT     | true    || 13860
+        Station.SHINOSAKA | SuperExpressType.NOZOMI | SeatType.RESERVED_SEAT | true    || 14700
+        Station.SHINOSAKA | SuperExpressType.NOZOMI | SeatType.FREE_SEAT     | true    || 13860
+        Station.HIMEJI    | SuperExpressType.HIKARI | SeatType.RESERVED_SEAT | true    || 14920
+        Station.HIMEJI    | SuperExpressType.HIKARI | SeatType.FREE_SEAT     | true    || 14380
+        Station.HIMEJI    | SuperExpressType.NOZOMI | SeatType.RESERVED_SEAT | true    || 15440
+        Station.HIMEJI    | SuperExpressType.NOZOMI | SeatType.FREE_SEAT     | true    || 14380
     }
 }
 
