@@ -10,16 +10,9 @@ public class SuperExpressSurcharge {
     @Getter
     private final int value;
 
-    public SuperExpressSurcharge plus(SuperExpressSurcharge superExpressSurcharge){
-        return new SuperExpressSurcharge(value + superExpressSurcharge.getValue());
-    }
-
-    public SuperExpressSurcharge truncate() {
-        int unitDigit = value % 10;
-        return new SuperExpressSurcharge(value - unitDigit);
-    }
-
     public SuperExpressSurcharge discount(int discountValue) {
-        return new SuperExpressSurcharge((int) ((double) value * ((double) discountValue / 100)));
+        SuperExpressSurcharge discountedSuperExpressSurcharge = new SuperExpressSurcharge((int) ((double) value * (1 - ((double) discountValue / 100))));
+        int unitDigit = discountedSuperExpressSurcharge.getValue() % 10;
+        return new SuperExpressSurcharge(discountedSuperExpressSurcharge.getValue() - unitDigit);
     }
 }
