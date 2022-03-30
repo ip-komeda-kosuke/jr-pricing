@@ -32,6 +32,10 @@ package domain{
         class FareForOnePerson{
             - int value
         }
+
+        class BasicFareForRoundTrip{
+            - int value
+        }
     }
 
     package station{
@@ -96,6 +100,12 @@ package service{
         - SuperExpressSurcharge calculateExpressSurchargeService(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType)
         - AdultFare calculateAdultFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType)
         - ChildFare calculateChildFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType)
+    }
+
+    class RoundTripFareOneOfPersonService{
+        - IFareRepository fareRepository
+
+        - RoundTripFare calculateRoundTripFare(BasicFare basicFare, Distance distance)
     }
 
 }
