@@ -1,6 +1,7 @@
 package Service;
 
 import domain.child_option.ChildOption;
+import domain.discount.DiscountPolicy;
 import domain.fare.*;
 import domain.seat_type.SeatType;
 import domain.station.DepartureAndDestination;
@@ -29,7 +30,7 @@ public class FareForOnePersonService {
         }
 
         if (seatType == SeatType.FREE_SEAT) {
-            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() - 530);
+            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() - DiscountPolicy.getDISCOUNT_FOR_FREE_SEAT().getValue());
             return superExpressSurcharge;
         }
         return superExpressSurcharge;
