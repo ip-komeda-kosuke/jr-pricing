@@ -1,4 +1,4 @@
-package domain.fare;
+package domain.fare.option_fare;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

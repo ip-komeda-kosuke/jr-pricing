@@ -1,11 +1,12 @@
-package domain.fare;
+package domain.fare.one_way_fare;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
-public class SuperExpressFareForReservedSeat {
+@EqualsAndHashCode
+public class AdultFare {
     @Getter
     private final int value;
 }

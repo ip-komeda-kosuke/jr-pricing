@@ -1,9 +1,9 @@
 package repository;
 
 import domain.distance.Distance;
-import domain.fare.BasicFare;
-import domain.fare.ExtraFare;
-import domain.fare.SuperExpressFareForReservedSeat;
+import domain.fare.one_way_fare.BasicFare;
+import domain.fare.option_fare.ExtraFare;
+import domain.fare.one_way_fare.SuperExpressFareForReservedSeat;
 import domain.station.DepartureAndDestination;
 
 import java.io.BufferedReader;

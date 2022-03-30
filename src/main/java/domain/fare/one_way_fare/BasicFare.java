@@ -1,4 +1,4 @@
-package domain.fare;
+package domain.fare.one_way_fare;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,9 @@ package Service;
 
 import domain.child_option.ChildOption;
 import domain.distance.Distance;
-import domain.fare.*;
+import domain.fare.one_way_fare.BasicFare;
+import domain.fare.one_way_fare.SuperExpressSurcharge;
+import domain.fare.round_trip_fare.*;
 import domain.seat_type.SeatType;
 import domain.station.DepartureAndDestination;
 import domain.super_express_type.SuperExpressType;
