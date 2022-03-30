@@ -1,5 +1,6 @@
 package domain
 
+import domain.fare.Fare
 import spock.lang.Specification
 
 class FareTest extends Specification {
