@@ -1,6 +1,7 @@
 package Service;
 
 import domain.child_option.ChildOption;
+import domain.discount.RoundTripDiscountPolicy;
 import domain.distance.Distance;
 import domain.fare.one_way_fare.BasicFare;
 import domain.fare.one_way_fare.BasicFareForChild;
@@ -66,7 +67,7 @@ public class RoundTripFareOneOfPersonService {
         }
     }
 
-    private boolean isRoundTripDiscount(Distance distance){
-        return distance.getValue() >= 601;
+    private boolean isRoundTripDiscount(Distance distance) {
+        return distance.getValue() >= RoundTripDiscountPolicy.getDISTANCE().getValue();
     }
 }
