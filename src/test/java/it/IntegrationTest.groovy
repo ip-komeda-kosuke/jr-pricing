@@ -18,14 +18,14 @@ class IntegrationTest extends Specification {
         new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(
                 new DepartureAndDestination(Station.TOKYO, Station.SHINOSAKA),
                 SuperExpressType.HIKARI, SeatType.RESERVED_SEAT,
-                new ChildOption(false)).getValue() == 14400
+                new ChildOption(false)).getFare().getValue() == 14400
     }
 
     def "TOKYO から #destination まで #superExpressType #seatType 大人1枚"() {
         when:
         def actualFare = new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(
                 new DepartureAndDestination(Station.TOKYO, destination),
-                superExpressType, seatType, new ChildOption(false)).getValue()
+                superExpressType, seatType, new ChildOption(false)).getFare().getValue()
 
         then:
         actualFare == expectedFare
@@ -46,7 +46,7 @@ class IntegrationTest extends Specification {
         when:
         def actualFare = new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(
                 new DepartureAndDestination(Station.TOKYO, destination),
-                superExpressType, seatType, new ChildOption(true)).getValue()
+                superExpressType, seatType, new ChildOption(true)).getFare().getValue()
 
         then:
         actualFare == expectedFare
@@ -67,7 +67,7 @@ class IntegrationTest extends Specification {
         when:
         def actualFare = new RoundTripFareOneOfPersonService(new FareRepository()).calculateRoundTripFare(
                 new DepartureAndDestination(Station.TOKYO, destination),
-                superExpressType, seatType, new ChildOption(isChild)).getValue()
+                superExpressType, seatType, new ChildOption(isChild)).getFare().getValue()
 
         then:
         actualFare == expectedFare

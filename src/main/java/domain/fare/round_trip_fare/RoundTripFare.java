@@ -1,5 +1,6 @@
 package domain.fare.round_trip_fare;
 
+import domain.fare.Fare;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,5 +9,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RoundTripFare {
     @Getter
-    private final int value;
+    private final Fare fare;
 }

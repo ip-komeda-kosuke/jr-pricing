@@ -1,6 +1,7 @@
 package repository;
 
 import domain.distance.Distance;
+import domain.fare.Fare;
 import domain.fare.one_way_fare.BasicFare;
 import domain.fare.option_fare.ExtraFare;
 import domain.fare.one_way_fare.SuperExpressFareForReservedSeat;
@@ -17,7 +18,7 @@ public class FareRepository implements IFareRepository {
         String start = departureAndDestination.getDeparture().toString();
         String end = departureAndDestination.getDestination().toString();
 
-        return new BasicFare(searchChargeFromCSV(file, start, end));
+        return new BasicFare(new Fare(searchChargeFromCSV(file, start, end)));
     }
 
     @Override
@@ -26,7 +27,7 @@ public class FareRepository implements IFareRepository {
         String start = departureAndDestination.getDeparture().toString();
         String end = departureAndDestination.getDestination().toString();
 
-        return new SuperExpressFareForReservedSeat(searchChargeFromCSV(file, start, end));
+        return new SuperExpressFareForReservedSeat(new Fare(searchChargeFromCSV(file, start, end)));
     }
 
     @Override
@@ -35,7 +36,7 @@ public class FareRepository implements IFareRepository {
         String start = departureAndDestination.getDeparture().toString();
         String end = departureAndDestination.getDestination().toString();
 
-        return new ExtraFare(searchChargeFromCSV(file, start, end));
+        return new ExtraFare(new Fare(searchChargeFromCSV(file, start, end)));
     }
 
     @Override

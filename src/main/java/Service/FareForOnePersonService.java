@@ -1,8 +1,10 @@
 package Service;
 
 import domain.child_option.ChildOption;
+import domain.discount.DiscountForFreeSeat;
 import domain.discount.DiscountPolicy;
 import domain.fare.one_way_fare.*;
+import domain.fare.option_fare.ExtraFare;
 import domain.seat_type.SeatType;
 import domain.station.DepartureAndDestination;
 import domain.super_express_type.SuperExpressType;
@@ -15,44 +17,45 @@ public class FareForOnePersonService {
 
     public FareForOnePerson calculateFareForOnePerson(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType, ChildOption childOption) {
         if (childOption.isChild()) {
-            return new FareForOnePerson(calculateChildFare(departureAndDestination, superExpressType, seatType).getValue());
+            return new FareForOnePerson(calculateChildFare(departureAndDestination, superExpressType, seatType).getFare());
 
         } else {
-            return new FareForOnePerson(calculateAdultFare(departureAndDestination, superExpressType, seatType).getValue());
+            return new FareForOnePerson(calculateAdultFare(departureAndDestination, superExpressType, seatType).getFare());
         }
     }
 
     SuperExpressSurcharge calculateExpressSurcharge(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
-        SuperExpressSurcharge superExpressSurcharge = new SuperExpressSurcharge(fareRepository.findSuperExpressFare(departureAndDestination).getValue());
+        SuperExpressSurcharge superExpressSurcharge = new SuperExpressSurcharge(fareRepository.findSuperExpressFare(departureAndDestination).getFare());
         if (superExpressType == SuperExpressType.NOZOMI && seatType == SeatType.RESERVED_SEAT) {
-            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() + fareRepository.findExtraFare(departureAndDestination).getValue());
+            ExtraFare extraFare = fareRepository.findExtraFare(departureAndDestination);
+            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getFare().plus(extraFare.getFare()));
             return superExpressSurcharge;
         }
-
         if (seatType == SeatType.FREE_SEAT) {
-            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getValue() - DiscountPolicy.getDISCOUNT_FOR_FREE_SEAT().getValue());
+            DiscountForFreeSeat discountForFreeSeat = DiscountPolicy.getDISCOUNT_FOR_FREE_SEAT();
+            superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getFare().plus(discountForFreeSeat.getFare()));
             return superExpressSurcharge;
         }
         return superExpressSurcharge;
     }
 
     BasicFareForChild calculateBasicFareForChild(DepartureAndDestination departureAndDestination) {
-        return new BasicFareForChild(fareRepository.findBasicFare(departureAndDestination).discount(50).getValue());
+        return new BasicFareForChild(fareRepository.findBasicFare(departureAndDestination).getFare().discount(50));
     }
 
     SuperExpressSurchargeForChild calculateSuperExpressSurchargeForChild(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
-        return new SuperExpressSurchargeForChild(calculateExpressSurcharge(departureAndDestination, superExpressType, seatType).discount(50).getValue());
+        return new SuperExpressSurchargeForChild(calculateExpressSurcharge(departureAndDestination, superExpressType, seatType).getFare().discount(50));
     }
 
     private AdultFare calculateAdultFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
         BasicFare basicFare = fareRepository.findBasicFare(departureAndDestination);
         SuperExpressSurcharge superExpressSurcharge = calculateExpressSurcharge(departureAndDestination, superExpressType, seatType);
-        return new AdultFare(basicFare.getValue() + superExpressSurcharge.getValue());
+        return new AdultFare(basicFare.getFare().plus(superExpressSurcharge.getFare()));
     }
 
     private ChildFare calculateChildFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
         BasicFareForChild basicFareFareForChild = calculateBasicFareForChild(departureAndDestination);
         SuperExpressSurchargeForChild superExpressSurchargeForChild = calculateSuperExpressSurchargeForChild(departureAndDestination, superExpressType, seatType);
-        return new ChildFare(basicFareFareForChild.getValue() + superExpressSurchargeForChild.getValue());
+        return new ChildFare(basicFareFareForChild.getFare().plus(superExpressSurchargeForChild.getFare()));
     }
 }
