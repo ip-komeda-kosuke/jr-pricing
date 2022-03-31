@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class ChildFareForRoundTrip {
+public class RoundTripChildFare {
     @Getter
     private final int value;
 }
