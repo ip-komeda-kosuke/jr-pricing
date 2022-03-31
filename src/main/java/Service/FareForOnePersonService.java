@@ -2,7 +2,7 @@ package Service;
 
 import domain.child_option.ChildOption;
 import domain.discount.DiscountForFreeSeat;
-import domain.discount.DiscountPolicy;
+import domain.discount.DiscountForFreeSeatPolicy;
 import domain.fare.one_way_fare.*;
 import domain.fare.option_fare.ExtraFare;
 import domain.seat_type.SeatType;
@@ -32,7 +32,7 @@ public class FareForOnePersonService {
             return superExpressSurcharge;
         }
         if (seatType == SeatType.FREE_SEAT) {
-            DiscountForFreeSeat discountForFreeSeat = DiscountPolicy.getDISCOUNT_FOR_FREE_SEAT();
+            DiscountForFreeSeat discountForFreeSeat = DiscountForFreeSeatPolicy.getDISCOUNT_FOR_FREE_SEAT();
             superExpressSurcharge = new SuperExpressSurcharge(superExpressSurcharge.getFare().plus(discountForFreeSeat.getFare()));
             return superExpressSurcharge;
         }

@@ -38,7 +38,7 @@ public class RoundTripFareOneOfPersonService {
     }
 
     private RoundTripAdultFare calculateAdultFareForRoundTrip(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType) {
-        RoundTripBasicFare roundTripBasicFare = calculateRoundTripBasicFare(departureAndDestination);
+        RoundTripBasicFare roundTripBasicFare = calculateRoundTripBasicFareForAdult(departureAndDestination);
         RoundTripSuperExpressSurcharge roundTripSuperExpressSurcharge = calculateRoundTripSuperExpressSurcharge(departureAndDestination, superExpressType, seatType);
         return new RoundTripAdultFare(roundTripBasicFare.getFare().plus(roundTripSuperExpressSurcharge.getFare()));
     }
@@ -49,24 +49,20 @@ public class RoundTripFareOneOfPersonService {
         return new RoundTripChildFare(roundTripBasicFareForChild.getFare().plus(roundTripSuperExpressSurchargeForChild.getFare()));
     }
 
-    private RoundTripBasicFare calculateRoundTripBasicFare(DepartureAndDestination departureAndDestination) {
+    private RoundTripBasicFare calculateRoundTripBasicFareForAdult(DepartureAndDestination departureAndDestination) {
         BasicFare basicFare = fareRepository.findBasicFare(departureAndDestination);
         Distance distance = fareRepository.findDistance(departureAndDestination);
-        return new RoundTripBasicFare(calculateRoundTripBsicFare(distance, basicFare.getFare()));
+        return new RoundTripBasicFare(calculateRoundTripBasicFareForAdult(distance, basicFare.getFare()));
     }
 
     private RoundTripBasicFareForChild calculateRoundTripBasicFareForChild(DepartureAndDestination departureAndDestination) {
         BasicFareForChild basicFareForChild = new FareForOnePersonService(fareRepository).calculateBasicFareForChild(departureAndDestination);
         Distance distance = fareRepository.findDistance(departureAndDestination);
-        return new RoundTripBasicFareForChild(calculateRoundTripBsicFare(distance, basicFareForChild.getFare()));
+        return new RoundTripBasicFareForChild(calculateRoundTripBasicFareForAdult(distance, basicFareForChild.getFare()));
     }
 
-    private boolean isRoundTripDiscount(Distance distance) {
-        return distance.getValue() >= RoundTripDiscountPolicy.getDISTANCE().getValue();
-    }
-
-    private Fare calculateRoundTripBsicFare(Distance distance, Fare fare) {
-        if (isRoundTripDiscount(distance)) {
+    private Fare calculateRoundTripBasicFareForAdult(Distance distance, Fare fare) {
+        if (distance.getValue() >= RoundTripDiscountPolicy.getDISTANCE().getValue()) {
             return fare.discount(10).two_times();
         } else {
             return fare.two_times();
