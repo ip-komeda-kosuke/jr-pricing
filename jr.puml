@@ -1,0 +1,115 @@
+@startuml class_design
+package domain{
+    package fare{
+        class Fare{
+            - int value
+        }
+
+        class BasicFare{
+            - int value
+        }
+
+        class SuperExpressFareForReservedSeat{
+            - int value
+        }
+
+        class SuperExpressSurcharge{
+            - int value
+        }
+
+        class ExtraFare{
+            - int value
+        }
+
+        class AdultFare{
+            - int value
+        }
+
+        class ChildFare{
+            - int value
+        }
+
+        class FareForOnePerson{
+            - int value
+        }
+
+        class BasicFareForRoundTrip{
+            - int value
+        }
+    }
+
+    package station{
+        enum Station{
+            TOKYO,
+            SHINOSAKA,
+            HIMEJI,
+        }
+
+        class DepartureAndDestination{
+            - Station departure
+            - Station destination
+        }
+    }
+
+    package super_express_type{
+        enum SuperExpressType{
+            HIKARI,
+            NOZOMI,
+        }
+
+        class SuperExpressOption{
+            - bool value
+        }
+    }
+
+    package seat_type{
+        enum SeatType{
+            ReservedSeat,
+            FreeSeat,
+        }
+    }
+
+    package child_option{
+        class ChildOpttion{
+            bool isChild
+        }
+    }
+
+
+}
+
+package repository{
+    interface IFareRepository{
+        BasicFare findBasicFare(DepartureAndDestination departureAndDestination,SuperExpressType superExpressType, SeatType seatType)
+        SuperExpressFareResevedSeat findSuperExpressFare(DepartureAndDestination departureAndDestination,SuperExpressType superExpressType, SeatType seatType)
+        ExtraFare findExtraFare(DepartureAndDestination departureAndDestination,SuperExpressType superExpressType, SeatType seatType)
+    }
+
+    class FareRepository{
+        BasicFare findBasicFare(DepartureAndDestination departureAndDestination,SuperExpressType superExpressType, SeatType seatType)
+        SuperExpressFareResevedSeat findSuperExpressFare(DepartureAndDestination departureAndDestination,SuperExpressType superExpressType, SeatType seatType)
+        ExtraFare findExtraFare(DepartureAndDestination departureAndDestination,SuperExpressType superExpressType, SeatType seatType)
+    }
+
+}
+
+package service{
+    class FareForOnePersonService{
+        - IFareRepository fareRepository
+        + FareForOnePerson calculateFareForOnePerson(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType, ChildOption childOption)
+        - SuperExpressSurcharge calculateExpressSurchargeService(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType)
+        - AdultFare calculateAdultFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType)
+        - ChildFare calculateChildFare(DepartureAndDestination departureAndDestination, SuperExpressType superExpressType, SeatType seatType)
+    }
+
+    class RoundTripFareOneOfPersonService{
+        - IFareRepository fareRepository
+
+        - RoundTripFare calculateRoundTripFare(BasicFare basicFare, Distance distance)
+    }
+
+}
+
+FareRepository ..|> IFareRepository
+
+@enduml
