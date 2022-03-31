@@ -1,6 +1,7 @@
 package domain.fare;
 
 import domain.fare.one_way_fare.BasicFare;
+import domain.rate.Rate;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,8 +16,14 @@ public class Fare {
         return new Fare(value + fare.getValue());
     }
 
-    public Fare discount(int discountValue) {
-        Fare fare = new Fare((int) ((double) value * (1 - ((double) discountValue / 100))));
+//    public Fare discount(int discountValue) {
+//        Fare fare = new Fare((int) ((double) value * (1 - ((double) discountValue / 100))));
+//        int unitDigit = fare.getValue() % 10;
+//        return new Fare(fare.getValue() - unitDigit);
+//    }
+
+    public Fare discount(Rate rate) {
+        Fare fare = new Fare((int) ((double) value * (1 - ((double) rate.getValue() / 100))));
         int unitDigit = fare.getValue() % 10;
         return new Fare(fare.getValue() - unitDigit);
     }

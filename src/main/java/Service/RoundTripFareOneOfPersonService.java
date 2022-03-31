@@ -9,6 +9,8 @@ import domain.fare.one_way_fare.BasicFareForChild;
 import domain.fare.one_way_fare.SuperExpressSurcharge;
 import domain.fare.one_way_fare.SuperExpressSurchargeForChild;
 import domain.fare.round_trip_fare.*;
+import domain.rate.DiscountRateForRoundTripFarePolicy;
+import domain.rate.Rate;
 import domain.seat_type.SeatType;
 import domain.station.DepartureAndDestination;
 import domain.super_express_type.SuperExpressType;
@@ -63,7 +65,7 @@ public class RoundTripFareOneOfPersonService {
 
     private Fare calculateRoundTripBasicFareForAdult(Distance distance, Fare fare) {
         if (distance.getValue() >= RoundTripDiscountPolicy.getDISTANCE().getValue()) {
-            return fare.discount(10).two_times();
+            return fare.discount(DiscountRateForRoundTripFarePolicy.getDiscountRateForRoundTripFare().getRate()).two_times();
         } else {
             return fare.two_times();
         }
