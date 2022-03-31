@@ -1,13 +1,13 @@
 package it
 
-import Service.FareForOnePersonService
-import Service.RoundTripFareOneOfPersonService
 import domain.child_option.ChildOption
 import domain.seat_type.SeatType
 import domain.station.DepartureAndDestination
 import domain.station.Station
 import domain.super_express_type.SuperExpressType
 import repository.FareRepository
+import service.OneWayFareForOneOfPersonService
+import service.RoundTripFareForOneOfPersonService
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -15,7 +15,7 @@ import spock.lang.Unroll
 class IntegrationTest extends Specification {
     def "東京 から 新大阪 まで ひかり 指定席 大人片道1枚"() {
         expect:
-        new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(
+        new OneWayFareForOneOfPersonService(new FareRepository()).calculateFareForOnePerson(
                 new DepartureAndDestination(Station.TOKYO, Station.SHINOSAKA),
                 SuperExpressType.HIKARI, SeatType.RESERVED_SEAT,
                 new ChildOption(false)).getFare().getValue() == 14400
@@ -23,7 +23,7 @@ class IntegrationTest extends Specification {
 
     def "TOKYO から #destination まで #superExpressType #seatType 大人1枚"() {
         when:
-        def actualFare = new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(
+        def actualFare = new OneWayFareForOneOfPersonService(new FareRepository()).calculateFareForOnePerson(
                 new DepartureAndDestination(Station.TOKYO, destination),
                 superExpressType, seatType, new ChildOption(false)).getFare().getValue()
 
@@ -44,7 +44,7 @@ class IntegrationTest extends Specification {
 
     def "TOKYO から #destination まで #superExpressType #seatType 子供1枚"() {
         when:
-        def actualFare = new FareForOnePersonService(new FareRepository()).calculateFareForOnePerson(
+        def actualFare = new OneWayFareForOneOfPersonService(new FareRepository()).calculateFareForOnePerson(
                 new DepartureAndDestination(Station.TOKYO, destination),
                 superExpressType, seatType, new ChildOption(true)).getFare().getValue()
 
@@ -65,7 +65,7 @@ class IntegrationTest extends Specification {
 
     def "TOKYO から #destination まで #superExpressType #seatType 子供オプション #isChild 往復"() {
         when:
-        def actualFare = new RoundTripFareOneOfPersonService(new FareRepository()).calculateRoundTripFare(
+        def actualFare = new RoundTripFareForOneOfPersonService(new FareRepository()).calculateRoundTripFare(
                 new DepartureAndDestination(Station.TOKYO, destination),
                 superExpressType, seatType, new ChildOption(isChild)).getFare().getValue()
 
